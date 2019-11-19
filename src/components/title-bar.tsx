@@ -1,6 +1,6 @@
 import React, { FC, ReactNode } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes, faWindowMaximize, faWindowMinimize } from '@fortawesome/free-solid-svg-icons';
+import { faTimes, faWindowMaximize, faWindowMinimize, faWindowRestore } from '@fortawesome/free-solid-svg-icons';
 import { remote } from 'electron';
 
 const TitleBar: FC<{ title: string, icon?: ReactNode }> = ({ title, icon }) => {
@@ -14,9 +14,17 @@ const TitleBar: FC<{ title: string, icon?: ReactNode }> = ({ title, icon }) => {
             <button className="btn-min" onClick={() => win.minimize()} disabled={!win.minimizable}>
                 <FontAwesomeIcon icon={faWindowMinimize} fixedWidth />
             </button>
-            <button className="btn-max" onClick={() => win.maximize()} disabled={!win.maximizable}>
-                <FontAwesomeIcon icon={faWindowMaximize} fixedWidth />
-            </button>
+            {
+                win.isMaximized() ?
+                    <button className="btn-max" onClick={() => { win.restore(); this.forceUpdate(); }}
+                        disabled={!win.maximizable}>
+                        <FontAwesomeIcon icon={faWindowRestore} fixedWidth />
+                    </button> :
+                    <button className="btn-max" onClick={() => { win.maximize(); this.forceUpdate(); }}
+                        disabled={!win.maximizable}>
+                        <FontAwesomeIcon icon={faWindowMaximize} fixedWidth />
+                    </button>
+            }
             <button className="btn-close" onClick={() => win.close()} disabled={!win.closable}>
                 <FontAwesomeIcon icon={faTimes} fixedWidth />
             </button>

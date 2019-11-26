@@ -1,5 +1,14 @@
 import { app, BrowserWindow } from 'electron';
 
+if (DEVELOPMENT) {
+  const { default: installExtension, REACT_DEVELOPER_TOOLS } = require('electron-devtools-installer');
+  installExtension(REACT_DEVELOPER_TOOLS).then((name: string) => {
+    console.log(`Added extension: ${name}`);
+  }).catch((err: any) => {
+    console.error(`Failed to install React Dev Tools:`, err);
+  });
+}
+
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
   app.quit();
